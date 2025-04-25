@@ -975,6 +975,12 @@ program
     "Backup files for ipfs messages (name format: ipfsHash1.json, ipfsHash2.json, ..., ipfsHashN.json)",
     (value: string | undefined) => value?.split(/\s*,\s*/),
   )
+  .option(
+    "--incremental <incremental>",
+    "whether to regenerate proofs incrementally",
+    (value) => value === "true",
+    false,
+  )
   .action(
     async ({
       quiet,
@@ -1000,6 +1006,7 @@ program
       processWitnessdat,
       wasm,
       rapidsnark,
+      incremental,
     }) => {
       try {
         banner(quiet);
@@ -1038,6 +1045,7 @@ program
           processDatFile: processWitnessdat,
           useWasm: wasm,
           rapidsnark,
+          incremental,
         });
       } catch (error) {
         program.error((error as Error).message, { exitCode: 1 });
